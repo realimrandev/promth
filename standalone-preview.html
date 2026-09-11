@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMRAN PROMTH — Senior AI Prompt Studio & 3D Vault</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at 50% 20%, #111827 0%, #070913 100%);
+      color: #f0f6fc;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .glass-panel {
+      background: rgba(13, 18, 36, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+    }
+    .glass-panel:hover {
+      border-color: rgba(0, 240, 255, 0.35);
+      box-shadow: 0 10px 40px -10px rgba(0, 240, 255, 0.25);
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #070913; }
+    ::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 4px; }
+  </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between">
+
+  <!-- 3D Canvas Background -->
+  <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-80"></canvas>
+
+  <!-- Main Content Container -->
+  <div class="relative z-10 max-w-6xl mx-auto px-4 py-10 space-y-10 w-full">
+
+    <!-- Header -->
+    <header class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+      <div class="space-y-2 text-center md:text-left">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 text-xs font-mono">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span>SENIOR PROMPT ARCHITECT • 20+ YEARS EXPERIENCE</span>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
+          IMRAN <span class="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">PROMTH</span> STUDIO
+        </h1>
+        <p class="text-sm text-gray-400 max-w-xl">
+          High-performance 3D Neural Prompt Architecture Suite for Google Flow, Kling, Midjourney, and Foundation AI Models.
+        </p>
+      </div>
+
+      <div class="flex flex-col items-center md:items-end gap-2 font-mono text-xs text-gray-400">
+        <div class="flex items-center gap-2 bg-black/60 border border-gray-800 px-3 py-1.5 rounded-lg">
+          <span class="w-2 h-2 rounded-full bg-green-400"></span>
+          <span>Status: Vercel & GitHub Ready</span>
+        </div>
+        <div class="flex gap-2">
+          <span class="bg-cyan-950/50 text-cyan-300 border border-cyan-800/50 px-2 py-0.5 rounded">Next.js 14</span>
+          <span class="bg-purple-950/50 text-purple-300 border border-purple-800/50 px-2 py-0.5 rounded">3D Engine</span>
+          <span class="bg-pink-950/50 text-pink-300 border border-pink-800/50 px-2 py-0.5 rounded">Vault</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Studio Editor -->
+    <div class="glass-panel rounded-2xl p-6 md:p-8 space-y-6 relative">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-cyan-500/20 pb-4">
+        <div>
+          <span class="text-xs font-mono tracking-wider uppercase text-cyan-300">⚡ Neural Matrix v3.4</span>
+          <h2 class="text-2xl font-bold text-white mt-1">Prompt Studio & Editor</h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs text-gray-400 font-mono">Template:</label>
+          <select id="templateSelect" class="bg-black/60 border border-cyan-500/30 text-cyan-200 text-xs rounded-lg px-3 py-1.5 focus:outline-none">
+            <option value="" disabled selected>Load Master Template...</option>
+            <option value="mustang">🎬 3D Cinematic Car Edit (Mustang 5.0)</option>
+            <option value="portrait">✨ Neon Rim Light Portrait Master</option>
+            <option value="avatar">🚀 Google Flow AI Avatar Master</option>
+            <option value="commercial">💎 Commercial Brand Ad Master</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Config Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-mono uppercase text-gray-400 mb-1.5">Prompt Title</label>
+          <input id="promptTitle" type="text" value="Master Lyra Promth" class="w-full bg-black/50 border border-gray-700 focus:border-cyan-400 text-white rounded-xl px-3.5 py-2.5 text-sm focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono uppercase text-gray-400 mb-1.5">Category</label>
+          <select id="promptCategory" class="w-full bg-black/50 border border-gray-700 focus:border-cyan-400 text-cyan-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none">
+            <option value="Cinematic Video">Cinematic Video (Sora / Kling)</option>
+            <option value="Portrait & Photo">Portrait & Photo (Midjourney / Flux)</option>
+            <option value="AI Avatar Video">AI Avatar & Motion (Google Flow)</option>
+            <option value="Commercial Ad">Commercial Ad Poster</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-mono uppercase text-gray-400 mb-1.5">Target AI Model</label>
+          <select id="promptModel" class="w-full bg-black/50 border border-gray-700 focus:border-purple-400 text-purple-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none">
+            <option value="Google Flow">Google Flow</option>
+            <option value="Kling AI 2.6">Kling AI 2.6</option>
+            <option value="Midjourney v6">Midjourney v6</option>
+            <option value="Flux.1 Pro">Flux.1 Pro</option>
+            <option value="Claude 3.5 Sonnet">Claude 3.5 Sonnet</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Main Textarea -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+          <span class="text-cyan-300">Prompt Instructions</span>
+          <div class="flex items-center gap-3">
+            <span>Words: <strong id="wordCount" class="text-white">0</strong></span>
+            <span>Chars: <strong id="charCount" class="text-white">0</strong></span>
+            <span>Tokens: <strong id="tokenCount" class="text-cyan-400">~0</strong></span>
+          </div>
+        </div>
+        <textarea id="promptContent" rows="6" placeholder="Write your master prompt here..." class="w-full bg-black/70 border border-cyan-500/25 focus:border-cyan-400 text-gray-100 rounded-xl p-4 text-sm font-mono focus:outline-none"></textarea>
+      </div>
+
+      <!-- Preset Tags -->
+      <div>
+        <label class="block text-xs font-mono uppercase text-gray-400 mb-2">Click to Append Quality Enhancers:</label>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="appendTag('8K Ultra-realistic')" class="text-xs bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 px-2.5 py-1 rounded-full hover:bg-cyan-900">+ 8K Ultra-realistic</button>
+          <button onclick="appendTag('Cinematic 3D Lighting')" class="text-xs bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 px-2.5 py-1 rounded-full hover:bg-cyan-900">+ Cinematic 3D Lighting</button>
+          <button onclick="appendTag('Anamorphic Lens Flare')" class="text-xs bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 px-2.5 py-1 rounded-full hover:bg-cyan-900">+ Anamorphic Lens Flare</button>
+          <button onclick="appendTag('Neon Rim Light (#FFD400)')" class="text-xs bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 px-2.5 py-1 rounded-full hover:bg-cyan-900">+ Neon Rim Light</button>
+          <button onclick="appendTag('Octane 3D Render')" class="text-xs bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 px-2.5 py-1 rounded-full hover:bg-cyan-900">+ Octane Render</button>
+          <button onclick="appendTag('Natural Skin Micro-Texture')" class="text-xs bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 px-2.5 py-1 rounded-full hover:bg-cyan-900">+ Natural Skin Pores</button>
+        </div>
+      </div>
+
+      <!-- Negative Prompt -->
+      <div class="space-y-1">
+        <label class="block text-xs font-mono uppercase text-red-400/80">Negative Prompt (Exclusions)</label>
+        <textarea id="promptNegative" rows="2" placeholder="blurry, low quality, deformed, extra limbs..." class="w-full bg-black/50 border border-red-500/20 text-gray-300 rounded-xl p-3 text-xs font-mono focus:outline-none"></textarea>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-800">
+        <div class="flex items-center gap-2">
+          <button id="copyBtn" onclick="copyPrompt()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-semibold text-sm px-5 py-2.5 rounded-xl transition">
+            📋 Copy Prompt
+          </button>
+          <button id="saveBtn" onclick="savePrompt()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition">
+            💾 Save to Vault
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="exportJSON()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 px-3.5 py-2 rounded-lg">⬇ Export JSON</button>
+          <button onclick="resetEditor()" class="text-xs bg-red-950/30 text-red-400 border border-red-800/40 px-3.5 py-2 rounded-lg">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vault Section -->
+    <div class="glass-panel rounded-2xl p-6 md:p-8 space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-purple-500/20 pb-4">
+        <div>
+          <span class="text-xs font-mono tracking-wider uppercase text-purple-300">Vault Storage</span>
+          <h2 class="text-2xl font-bold text-white mt-1">Imran PROMTH Vault (<span id="vaultCount">0</span>)</h2>
+        </div>
+        <input id="searchInput" oninput="renderVault()" type="text" placeholder="Search saved prompts..." class="bg-black/60 border border-purple-500/30 text-purple-200 text-xs rounded-lg px-3 py-1.5 focus:outline-none w-56" />
+      </div>
+
+      <div id="vaultGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </div>
+  </div>
+
+  <footer class="relative z-10 border-t border-gray-800/80 bg-black/50 py-6 text-center text-xs font-mono text-gray-500">
+    ⚡ Crafted for Imran • Senior AI Prompt Architect • Ready for 1-Click Deployment to Vercel & GitHub
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // 3D Canvas Background
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
+    window.addEventListener('mousemove', (e) => {
+      targetX = (e.clientX - width / 2) * 0.0008;
+      targetY = (e.clientY - height / 2) * 0.0008;
+    });
+
+    const particles = [];
+    const colors = ['#00f0ff', '#a855f7', '#ec4899', '#3b82f6'];
+    for(let i = 0; i < 80; i++) {
+      const r = 350 + Math.random() * 450;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.acos(Math.random() * 2 - 1);
+      particles.push({
+        x: r * Math.sin(ph) * Math.cos(th),
+        y: r * Math.sin(ph) * Math.sin(th),
+        z: r * Math.cos(ph),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: 1.5 + Math.random() * 2
+      });
+    }
+
+    let rotX = 0, rotY = 0;
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      mouseX += (targetX - mouseX) * 0.05;
+      mouseY += (targetY - mouseY) * 0.05;
+      rotX += 0.003 + mouseY * 0.05;
+      rotY += 0.005 + mouseX * 0.05;
+
+      const fov = 450;
+      const projected = particles.map(p => {
+        let x1 = p.x * Math.cos(rotY) + p.z * Math.sin(rotY);
+        let z1 = -p.x * Math.sin(rotY) + p.z * Math.cos(rotY);
+        let y2 = p.y * Math.cos(rotX) - z1 * Math.sin(rotX);
+        let z2 = p.y * Math.sin(rotX) + z1 * Math.cos(rotX);
+        let scale = fov / (z2 + 800);
+        return {
+          x: width / 2 + x1 * scale,
+          y: height / 2 + y2 * scale,
+          scale: scale,
+          color: p.color,
+          size: p.size
+        };
+      });
+
+      // Lines
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < projected.length; i++) {
+        for (let j = i + 1; j < projected.length; j++) {
+          const dx = projected[i].x - projected[j].x;
+          const dy = projected[i].y - projected[j].y;
+          const d = Math.sqrt(dx*dx + dy*dy);
+          if (d < 85) {
+            ctx.strokeStyle = `rgba(168, 85, 247, ${ (1 - d/85) * 0.25 })`;
+            ctx.beginPath();
+            ctx.moveTo(projected[i].x, projected[i].y);
+            ctx.lineTo(projected[j].x, projected[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Dots
+      for (let p of projected) {
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, Math.max(p.size * p.scale, 0.8), 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Studio & Vault Logic
+    const contentEl = document.getElementById('promptContent');
+    const wordEl = document.getElementById('wordCount');
+    const charEl = document.getElementById('charCount');
+    const tokenEl = document.getElementById('tokenCount');
+
+    contentEl.addEventListener('input', updateStats);
+    function updateStats() {
+      const text = contentEl.value;
+      charEl.innerText = text.length;
+      wordEl.innerText = text.trim() ? text.trim().split(/\s+/).length : 0;
+      tokenEl.innerText = '~' + Math.ceil(text.length / 3.8);
+    }
+
+    const TEMPLATES = {
+      mustang: {
+        title: "Mustang 5.0 Cinematic Video Master",
+        category: "Cinematic Video",
+        model: "Google Flow / Kling 2.6",
+        content: "Vertical (9:16) luxury-lifestyle cinematic car edit. Black Ford Mustang GT 5.0 on a wet, overcast coastal road lined with vibrant cherry blossoms. Macro camera panning over all-black chronograph watch, rim lighting catching glossy mirror-finish paint. Hyper-realistic physics, 8k resolution, 60fps slow-motion drift.",
+        negative: "blurry, low quality, deformed hands, cartoonish, watermark"
+      },
+      portrait: {
+        title: "Golden Neon Rim Light Portrait Master",
+        category: "Portrait & Photo",
+        model: "Midjourney v6 / Flux.1",
+        content: "Dramatic monochrome black-and-white studio portrait on pure black background with an intense, glowing golden yellow neon rim light (#FFD400) wrapping around shoulders and hair. Shot on 85mm f/1.4 lens, eye-level, ultra-sharp facial details, natural skin pores, high dynamic range editorial magazine look.",
+        negative: "plastic skin, smooth filter, extra limbs, bad eyes, washed out"
+      },
+      avatar: {
+        title: "Google Flow AI Avatar Master",
+        category: "AI Avatar Video",
+        model: "Google Flow",
+        content: "Role: Senior Cinematic Director. Generate production-ready Google Flow JSON prompt. Environment: High-end futuristic glass office at golden hour. Avatar maintains exact facial identity, realistic micro-blinking, breathing rhythm, and natural lip sync. Lighting: 45-degree key softbox with ambient blue hour fill. 8K HDR render quality.",
+        negative: "robotic speech, stuttering lips, morphed face, mismatched audio"
+      },
+      commercial: {
+        title: "Commercial Brand Ad Master",
+        category: "Commercial Ad",
+        model: "Claude Opus / ChatGPT",
+        content: "Act as a world-class Creative Director and Commercial Photographer with 20+ years of experience. Analyze the product context and create an agency-level campaign poster. Include 1 captivating hook headline, 1 luxury tagline, and 4 concise benefit bullet points. Visual style: Dior / Apple commercial minimalism, volumetric lighting.",
+        negative: "cheap marketing clichés, generic AI buzzwords, cluttered text"
+      }
+    };
+
+    document.getElementById('templateSelect').addEventListener('change', (e) => {
+      const t = TEMPLATES[e.target.value];
+      if (!t) return;
+      document.getElementById('promptTitle').value = t.title;
+      document.getElementById('promptCategory').value = t.category;
+      document.getElementById('promptModel').value = t.model;
+      document.getElementById('promptContent').value = t.content;
+      document.getElementById('promptNegative').value = t.negative;
+      updateStats();
+    });
+
+    function appendTag(tag) {
+      if (!contentEl.value.includes(tag)) {
+        contentEl.value = contentEl.value.trim() ? contentEl.value.trim() + ', ' + tag : tag;
+        updateStats();
+      }
+    }
+
+    function copyPrompt() {
+      const neg = document.getElementById('promptNegative').value.trim();
+      const text = neg ? `${contentEl.value}\n\n[NEGATIVE PROMPT]\n${neg}` : contentEl.value;
+      navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copyBtn');
+      btn.innerText = '✓ Copied!';
+      setTimeout(() => btn.innerText = '📋 Copy Prompt', 2000);
+    }
+
+    let defaultPrompts = [
+      { id: '1', title: 'Mustang 5.0 Cinematic Video', category: 'Cinematic Video', model: 'Google Flow', content: TEMPLATES.mustang.content },
+      { id: '2', title: 'Neon Rim Light Portrait', category: 'Portrait & Photo', model: 'Flux.1', content: TEMPLATES.portrait.content },
+      { id: '3', title: 'Commercial Brand Ad Master', category: 'Commercial Ad', model: 'Claude Opus', content: TEMPLATES.commercial.content }
+    ];
+
+    let vault = JSON.parse(localStorage.getItem('imran_vault') || JSON.stringify(defaultPrompts));
+
+    function savePrompt() {
+      if (!contentEl.value.trim()) return;
+      const prompt = {
+        id: Date.now().toString(),
+        title: document.getElementById('promptTitle').value.trim() || 'Untitled Promth',
+        category: document.getElementById('promptCategory').value,
+        model: document.getElementById('promptModel').value,
+        content: contentEl.value.trim(),
+        negative: document.getElementById('promptNegative').value.trim()
+      };
+      vault.unshift(prompt);
+      localStorage.setItem('imran_vault', JSON.stringify(vault));
+      renderVault();
+      const btn = document.getElementById('saveBtn');
+      btn.innerText = '✓ Saved to Vault!';
+      setTimeout(() => btn.innerText = '💾 Save to Vault', 2000);
+    }
+
+    function deletePrompt(id) {
+      vault = vault.filter(p => p.id !== id);
+      localStorage.setItem('imran_vault', JSON.stringify(vault));
+      renderVault();
+    }
+
+    function loadToEditor(id) {
+      const p = vault.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('promptTitle').value = p.title;
+      document.getElementById('promptCategory').value = p.category;
+      document.getElementById('promptModel').value = p.model;
+      document.getElementById('promptContent').value = p.content;
+      document.getElementById('promptNegative').value = p.negative || '';
+      updateStats();
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    }
+
+    function renderVault() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const grid = document.getElementById('vaultGrid');
+      const filtered = vault.filter(p => p.title.toLowerCase().includes(query) || p.content.toLowerCase().includes(query));
+      document.getElementById('vaultCount').innerText = vault.length;
+
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="col-span-2 text-center py-8 text-gray-500 font-mono text-sm">No prompts found.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="bg-black/60 border border-gray-800 hover:border-purple-500/50 rounded-xl p-4 flex flex-col justify-between transition">
+          <div>
+            <div class="flex justify-between items-start gap-2 mb-2">
+              <h3 class="font-semibold text-white text-sm">${p.title}</h3>
+              <span class="text-[10px] font-mono bg-purple-950/60 text-purple-300 border border-purple-800/50 px-2 py-0.5 rounded-full">${p.category}</span>
+            </div>
+            <p class="text-xs text-gray-400 line-clamp-3 font-mono mb-3">${p.content}</p>
+          </div>
+          <div class="flex justify-between items-center pt-3 border-t border-gray-900 text-xs font-mono">
+            <span class="text-[10px] text-gray-500">${p.model}</span>
+            <div class="flex gap-1.5">
+              <button onclick="navigator.clipboard.writeText('${p.content.replace(/'/g, "\\'")}'); alert('Copied to clipboard!');" class="bg-cyan-950/50 text-cyan-300 px-2.5 py-1 rounded">Copy</button>
+              <button onclick="loadToEditor('${p.id}')" class="bg-purple-950/50 text-purple-300 px-2.5 py-1 rounded">Edit</button>
+              <button onclick="deletePrompt('${p.id}')" class="text-red-400 px-1.5 py-1">✕</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(vault, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'imran-promth-vault.json';
+      a.click();
+    }
+
+    function resetEditor() {
+      document.getElementById('promptTitle').value = 'New Master Promth';
+      document.getElementById('promptContent').value = '';
+      document.getElementById('promptNegative').value = '';
+      updateStats();
+    }
+
+    // Init
+    updateStats();
+    renderVault();
+  </script>
+</body>
+</html>
